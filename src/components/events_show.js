@@ -7,11 +7,14 @@ import { getEvent, deleteEvent, putEvent} from '../actions'
 class EventsShow extends Component {
   constructor(props){
     super(props)
-    console.log(this.props)
-
     this.onDeleteClick = this.onDeleteClick.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
  
+  }
+  
+  componentDidMount(){
+    const { id } = this.props.match.params
+    if (id) this.props.getEvent(id)
   }
 
   renderField(field){
@@ -61,10 +64,16 @@ const validate = values =>{
 
   return errors
 }
-const mapDispatchToProps = ({deleteEvent})
 
-export default connect(null, mapDispatchToProps)(
-  reduxForm({ validate, form: 'eventShowForm'})(EventsShow)
+const mapStateTopProps = (state, ownProps) => {
+  const event = state.events[ownProps.match.params.id]
+  return { initialValues: event, event }
+}
+
+const mapDispatchToProps = ({deleteEvent, getEvent})
+
+export default connect(mapStateTopProps, mapDispatchToProps)(
+  reduxForm({ validate, form: 'eventShowForm', enableReinitialize: true})(EventsShow)
 )
 
 
