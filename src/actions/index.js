@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const READ_EVENTS = 'READ_EVENTS'
 export const READ_EVENT = 'READ_EVENT'
-
+export const UPDATE_EVENT = 'UPDATE_EVENT'
 export const CREATE_EVENT = 'CREATE_EVENT'
 export const DELETE_EVENT = 'DELETE_EVENT'
 
@@ -23,6 +23,11 @@ export const postEvent = valuse => async dispatch =>
    
     dispatch({type: CREATE_EVENT, response})
 
+}
+
+export const putEvent = Values => async dispatch =>{
+    const response = await axios.put(`${ROOT_URL}/events/${Values.id}${QUERYSTRING}`, Values)
+    dispatch({type: UPDATE_EVENT, response})
 }
 
 export const getEvent = id => async dispatch => 
